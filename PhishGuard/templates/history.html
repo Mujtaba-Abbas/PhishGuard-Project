@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+{% block title %}Scan History{% endblock %}
+{% block page_heading %}Scan History{% endblock %}
+{% block content %}
+<section class="page-intro"><div class="eyebrow teal">YOUR RECENT ANALYSES</div><h2>Every scan, <span>in one place.</span></h2><p>PhishGuard stores local scan results so you can review risk levels and detected indicators.</p></section>
+<div class="panel history-panel">
+{% if scans %}
+<div class="table-wrap"><table><thead><tr><th>ID</th><th>TYPE</th><th>INPUT</th><th>RISK SCORE</th><th>THREAT LEVEL</th><th>INDICATORS</th><th>SCANNED AT</th></tr></thead><tbody>
+{% for scan in scans %}<tr><td>#{{ scan['id'] }}</td><td><span class="type-chip">{{ scan['scan_type']|upper }}</span></td><td class="history-input">{{ scan['input_text'][:60] }}{% if scan['input_text']|length > 60 %}…{% endif %}</td><td>{{ scan['risk_score'] }}/100</td><td><span class="risk-badge {{ scan['threat_level']|lower }}">{{ scan['threat_level'] }}</span></td><td class="history-input">{{ scan['indicators'] or '—' }}</td><td class="date-cell">{{ scan['scanned_at'] }}</td></tr>{% endfor %}
+</tbody></table></div>
+{% else %}<div class="empty-state"><div>◷</div><strong>Your history is empty</strong><p>Complete a scan on the dashboard to save your first result.</p><a class="primary-btn inline-btn" href="/">Go to dashboard →</a></div>{% endif %}
+</div>
+{% endblock %}

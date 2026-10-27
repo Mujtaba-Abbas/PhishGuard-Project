@@ -1,0 +1,51 @@
+{% extends "base.html" %}
+{% block title %}Dashboard{% endblock %}
+{% block content %}
+<section class="welcome-row">
+  <div><div class="eyebrow teal">YOUR SECURITY OVERVIEW</div><h2>Make every click a <span>safer one.</span></h2><p>Analyze suspicious URLs and email content to spot common phishing warning signs.</p></div>
+  <div class="welcome-icon"><div class="orbit"></div><div class="big-shield">✓</div><span class="spark spark-one">✦</span><span class="spark spark-two">✧</span></div>
+</section>
+<section class="stats-grid">
+  <div class="stat-card"><div class="stat-top"><span>Total scans</span><span class="stat-icon blue">⌕</span></div><div class="stat-number">{{ total }}</div><div class="stat-foot">All analyses completed</div></div>
+  <div class="stat-card"><div class="stat-top"><span>High / critical threats</span><span class="stat-icon red">⚑</span></div><div class="stat-number">{{ threats }}</div><div class="stat-foot">Require extra caution</div></div>
+  <div class="stat-card"><div class="stat-top"><span>Elevated-risk scans</span><span class="stat-icon amber">◈</span></div><div class="stat-number">{{ high_risk }}</div><div class="stat-foot">Medium risk or above</div></div>
+  <div class="stat-card"><div class="stat-top"><span>Detection engine</span><span class="stat-icon green">✓</span></div><div class="stat-number engine-number">ACTIVE</div><div class="stat-foot"><span class="green-dot"></span> Rule-based analysis</div></div>
+</section>
+<section class="scanner-grid" id="scanner">
+  <div class="panel scanner-panel">
+    <div class="panel-heading"><div class="panel-icon">⌕</div><div><h3>URL Scanner</h3><p>Check a suspicious website address</p></div><span class="mini-tag">01 / URL</span></div>
+    <form class="scan-form" data-scan-type="url">
+      <label for="url-input">Website URL</label>
+      <div class="input-wrap"><span>↗</span><input id="url-input" name="content" placeholder="https://example.com/login" autocomplete="off" required></div>
+      <div class="input-hint">Paste the full URL. Do not open the link to test it.</div>
+      <button class="primary-btn" type="submit">Analyze URL <span>→</span></button>
+    </form>
+  </div>
+  <div class="panel scanner-panel" id="email-analyzer">
+    <div class="panel-heading"><div class="panel-icon email-icon">✉</div><div><h3>Email Analyzer</h3><p>Inspect message text for phishing signs</p></div><span class="mini-tag">02 / EMAIL</span></div>
+    <form class="scan-form" data-scan-type="email">
+      <label for="email-input">Email content</label>
+      <textarea id="email-input" name="content" rows="3" placeholder="Paste suspicious email text here..." required></textarea>
+      <div class="input-hint">Remove personal or confidential information before pasting.</div>
+      <button class="primary-btn" type="submit">Analyze Email <span>→</span></button>
+    </form>
+  </div>
+</section>
+<section class="lower-grid">
+  <div class="panel recent-panel">
+    <div class="panel-heading simple-heading"><div><h3>Recent activity</h3><p>Your latest URL and email analyses</p></div><a class="text-link" href="/history">View history →</a></div>
+    {% if recent %}
+    <div class="table-wrap"><table><thead><tr><th>TYPE</th><th>INPUT</th><th>RISK</th><th>DATE</th></tr></thead><tbody>
+    {% for scan in recent %}<tr><td><span class="type-chip">{{ 'URL' if scan['scan_type'] == 'url' else 'EMAIL' }}</span></td><td class="input-cell">{{ scan['input_text'][:42] }}{% if scan['input_text']|length > 42 %}…{% endif %}</td><td><span class="risk-badge {{ scan['threat_level']|lower }}">{{ scan['threat_level'] }} · {{ scan['risk_score'] }}</span></td><td class="date-cell">{{ scan['scanned_at'][5:16] }}</td></tr>{% endfor %}
+    </tbody></table></div>
+    {% else %}<div class="empty-state"><div>⌕</div><strong>No scans yet</strong><p>Run your first URL or email analysis above to see activity here.</p></div>{% endif %}
+  </div>
+  <div class="panel tips-panel"><div class="panel-heading simple-heading"><div><h3>Quick safety checks</h3><p>Small habits, stronger security</p></div></div>
+    <div class="tip-item"><span class="tip-number">01</span><div><strong>Inspect the real domain</strong><p>Look for misspellings and extra words before the main domain.</p></div></div>
+    <div class="tip-item"><span class="tip-number">02</span><div><strong>Be wary of urgency</strong><p>Pressure to act immediately is a common phishing tactic.</p></div></div>
+    <div class="tip-item"><span class="tip-number">03</span><div><strong>Never share OTPs</strong><p>Keep passwords and one-time codes private.</p></div></div>
+    <a class="text-link tips-link" href="/awareness">Explore security tips →</a>
+  </div>
+</section>
+<div id="result-modal" class="modal hidden" role="dialog" aria-modal="true" aria-labelledby="result-title"><div class="modal-backdrop" data-close="true"></div><div class="modal-card"><button class="modal-close" data-close="true" aria-label="Close">×</button><div id="result-content"></div></div></div>
+{% endblock %}

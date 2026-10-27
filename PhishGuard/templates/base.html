@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{% block title %}PhishGuard{% endblock %} | PhishGuard</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+  <div class="app-shell">
+    <aside class="sidebar">
+      <a class="brand" href="/"><span class="brand-mark">P</span><span>Phish<span class="brand-accent">Guard</span><small>SECURITY AWARENESS</small></span></a>
+      <div class="nav-label">WORKSPACE</div>
+      <nav>
+        <a class="{% if request.path == '/' %}active{% endif %}" href="/"><span>▦</span> Dashboard</a>
+        <a href="/#scanner"><span>⌕</span> URL Scanner</a>
+        <a href="/#email-analyzer"><span>✉</span> Email Analyzer</a>
+        <a class="{% if request.path == '/history' %}active{% endif %}" href="/history"><span>◷</span> Scan History</a>
+      </nav>
+      <div class="nav-label learn-label">LEARN & PROTECT</div>
+      <nav>
+        <a class="{% if request.path == '/awareness' %}active{% endif %}" href="/awareness"><span>◇</span> Security Tips</a>
+        <a class="{% if request.path == '/about' %}active{% endif %}" href="/about"><span>ⓘ</span> About PhishGuard</a>
+      </nav>
+      <div class="sidebar-bottom">
+        <div class="shield-mini">✓</div>
+        <strong>Stay one step ahead</strong>
+        <p>Pause. Inspect. Protect your information.</p>
+        <span class="online-dot"></span> Rule-based protection active
+      </div>
+    </aside>
+    <main class="main-area">
+      <header class="topbar">
+        <div><span class="eyebrow">WEB-BASED PHISHING DETECTION</span><h1>{% block page_heading %}Security Dashboard{% endblock %}</h1></div>
+        <div class="topbar-right"><span class="status-pill"><i></i> SYSTEM READY</span><div class="avatar">PG</div></div>
+      </header>
+      {% block content %}{% endblock %}
+      <footer>PhishGuard <span>•</span> Educational phishing detection & awareness <span class="footer-note">Rule-based results are estimates, not a security guarantee.</span></footer>
+    </main>
+  </div>
+  <script src="{{ url_for('static', filename='app.js') }}"></script>
+</body>
+</html>
